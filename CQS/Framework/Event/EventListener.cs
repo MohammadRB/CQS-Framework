@@ -3,29 +3,19 @@ using CQS.Framework.App;
 
 namespace CQS.Framework.Event
 {
-    public abstract class EventListener<TBoundedContext, TEvent> : IEventListener<TBoundedContext, TEvent>
-        where TBoundedContext : class, IAppBoundedContext
+    public abstract class EventListener<TEvent> : IEventListener<TEvent>
         where TEvent : class, IEvent
     {
-        public void Handle(IAppBoundedContext appBoundedContext, IEvent @event)
+        public void Handle(AppDispatcher appDispatcher, IEvent @event)
         {
-            TBoundedContext targetContext = appBoundedContext as TBoundedContext;
-
-            if (targetContext == null)
-            {
-                throw new InvalidOperationException("Invalid context parameter");
-            }
-
-            var targetEvent = @event as TEvent;
-
-            if (targetEvent == null)
+            if (!(@event is TEvent targetEvent))
             {
                 throw new InvalidOperationException("Invalid event parameter");
             }
 
-            Handle(targetContext, targetEvent);
+            Handle(appDispatcher, targetEvent);
         }
 
-        public abstract void Handle(TBoundedContext appContext, TEvent @event);
+        public abstract void Handle(AppDispatcher appDispatcher, TEvent @event);
     }
 }

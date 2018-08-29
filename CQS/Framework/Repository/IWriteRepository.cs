@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CQS.Framework.Domain;
 
 namespace CQS.Framework.Repository
 {
-    public interface IWriteRepository<in TEntity>
+    public interface IWriteRepository<in TAroot> where TAroot : AggregateRoot
     {
-        void Insert(TEntity entity);
+        void Insert(TAroot entity);
 
-        void Update(TEntity entity);
+        void Update(TAroot entity);
 
-        void Delete(TEntity entity);
+        void Delete(TAroot entity);
     }
 }

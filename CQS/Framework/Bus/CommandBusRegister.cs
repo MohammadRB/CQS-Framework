@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using CQS.Framework.Command;
 
 namespace CQS.Framework.Bus
 {
-    public class CommandBusRegister<TBoundedCountext>
+    public class CommandBusRegister
     {
         public static CommandBus Instance { get; set; }
 
         public static CommandBus RegisterHandlers(Assembly assembly)
         {
             var result = new Dictionary<Type, ICommandHandler>();
-
-            var boundedContextType = typeof(TBoundedCountext);
-            var commandHandlerTypes = new[] {typeof(CommandHandler<,>), typeof(CommandHandler<,,>), typeof(CommandHandler<,,,>) , typeof(CommandHandler<,,,,>) };
+            var commandHandlerTypes = new[]
+            {
+                typeof(CommandHandler<>),
+                typeof(CommandHandler<,>),
+                typeof(CommandHandler<,,>),
+                typeof(CommandHandler<,,,>)
+            };
 
             var assemblyTypes = assembly.GetTypes();
             var commandHandlers = assemblyTypes
@@ -31,8 +33,7 @@ namespace CQS.Framework.Bus
                         while (currentBase != null)
                         {
                             if (currentBase.IsGenericType &&
-                                commandHandlerTypes.Any(ct => currentBase.GetGenericTypeDefinition() == ct) &&
-                                currentBase.GenericTypeArguments.First().IsAssignableFrom(boundedContextType))
+                                commandHandlerTypes.Any(ct => currentBase.GetGenericTypeDefinition() == ct))
                             {
                                 break;
                             }

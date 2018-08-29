@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CQS.Framework.App;
 using CQS.Framework.Command;
 
@@ -10,16 +6,10 @@ namespace CQS.Framework.Bus
 {
     public interface ICommandBus
     {
-        ICommandResult Send<TBoundedContext, TCommand>(TBoundedContext appBoundedContext, TCommand command)
-            where TBoundedContext : IAppBoundedContext
+        ICommandResult Send<TCommand>(AppDispatcher appDispatcher, TCommand command)
             where TCommand : ICommand;
 
-        Task<ICommandResult> SendAsync<TBoundedContext, TCommand>(TBoundedContext appBoundedContext, TCommand command)
-            where TBoundedContext : IAppBoundedContext
-            where TCommand : ICommand;
-
-        IDeferedCommandResult SendDeferred<TBoundedContext, TCommand>(TBoundedContext appBoundedContext, TCommand command)
-            where TBoundedContext : IAppBoundedContext
+        Task<ICommandResult> SendAsync<TCommand>(AppDispatcher appDispatcher, TCommand command)
             where TCommand : ICommand;
     }
 }

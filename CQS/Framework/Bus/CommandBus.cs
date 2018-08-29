@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Threading.Tasks;
 using CQS.Framework.App;
-using CQS.Framework.Bus;
 using CQS.Framework.Command;
 using CQS.Framework.DefaultImp;
+using CQS.Framework.DefaultImp.CommandResult;
 
 namespace CQS.Framework.Bus
 {
@@ -29,8 +25,7 @@ namespace CQS.Framework.Bus
             _commandHandlers = commandHandlers;
         }
 
-        public ICommandResult Send<TBoundedContext, TCommand>(TBoundedContext appBoundedContext, TCommand command)
-            where TBoundedContext : IAppBoundedContext
+        public ICommandResult Send<TCommand>(AppDispatcher appDispatcher, TCommand command)
             where TCommand : ICommand
         {
             ICommandResult result = null;
@@ -38,7 +33,7 @@ namespace CQS.Framework.Bus
 
             try
             {
-                result = handler.Execute(appBoundedContext, command);
+                result = handler.Execute(appDispatcher, command);
             }
             catch (Exception ex)
             {
@@ -48,20 +43,10 @@ namespace CQS.Framework.Bus
             return result;
         }
 
-        public Task<ICommandResult> SendAsync<TBoundedContext, TCommand>(TBoundedContext appBoundedContext, TCommand command)
-            where TBoundedContext : IAppBoundedContext
+        public Task<ICommandResult> SendAsync<TCommand>(AppDispatcher appDispatcher, TCommand command)
             where TCommand : ICommand
         {
-            return Task.Run(() => Send(appBoundedContext, command));
-        }
-
-        public IDeferedCommandResult SendDeferred<TBoundedContext, TCommand>(TBoundedContext appBoundedContext, TCommand command)
-            where TBoundedContext : IAppBoundedContext
-            where TCommand : ICommand
-        {
-            ICommandHandler handler = _GetHandler<TCommand>();
-
-            return handler.DeferredExecute(appBoundedContext, command);
+            return Task.Run(() => Send(appDispatcher, command));
         }
 
         private ICommandHandler _GetHandler<TCommand>() where TCommand : ICommand

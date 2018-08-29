@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CQS.Framework.App;
-
-namespace CQS.Framework.Query
+﻿namespace CQS.Framework.Query
 {
     public interface IQuery
     {
@@ -14,12 +7,11 @@ namespace CQS.Framework.Query
         IQueryResult GetResult();
     }
 
-    public interface IQuery<TEntity, TModel> : IQuery
-        where TEntity : class 
+    public interface IQuery<TModel> : IQuery
         where TModel : class
     {
         void SetResult(TModel @object);
-        void SetResult(IQueryResult<TEntity, TModel> queryResult);
-        IQueryResult<TEntity, TModel> GetResult();
+        void SetResult(IQueryResult<TModel> queryResult);
+        IQueryResult<TModel> GetResult();
     }
 }

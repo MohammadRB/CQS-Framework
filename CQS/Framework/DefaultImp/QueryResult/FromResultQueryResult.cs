@@ -2,16 +2,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using CQS.Framework.Query;
 
-namespace CQS.Framework.DefaultImp
+namespace CQS.Framework.DefaultImp.QueryResult
 {
-    public class FromResultQueryResult<TEntity, TModel> : QueryResult<TEntity, TModel> 
-        where TEntity : class
+    public class FromResultQueryResult<TModel> : QueryResult<TModel>
         where TModel : class
     {
         public TModel Object { get; private set; }
@@ -21,32 +18,32 @@ namespace CQS.Framework.DefaultImp
             Object = @object;
         }
 
-        public override IQueryResult<TEntity, TModel> Where(Expression<Func<TEntity, bool>> where)
+        public override IQueryResult<TModel> Where(Expression<Func<TModel, bool>> where)
         {
             throw new NotImplementedException();
         }
 
-        public override IQueryResult<TEntity, TModel> Include<TProperty>(Expression<Func<TEntity, TProperty>> include)
+        public override IQueryResult<TModel> Include<TProperty>(Expression<Func<TModel, TProperty>> include)
         {
             throw new NotImplementedException();
         }
 
-        public override IQueryResult<TEntity, TModel> OrderBy<TKey>(Expression<Func<TEntity, TKey>> orderby)
+        public override IQueryResult<TModel> OrderBy<TKey>(Expression<Func<TModel, TKey>> orderBy)
         {
             throw new NotImplementedException();
         }
 
-        public override IQueryResult< TEntity, TModel > OrderByDesc< TKey >(Expression< Func< TEntity, TKey > > @orderby)
+        public override IQueryResult< TModel > OrderByDesc< TKey >(Expression< Func< TModel, TKey > > orderBy)
         {
             throw new NotImplementedException();
         }
 
-        public override IQueryResult<TEntity, TModel> Skip(int skip)
+        public override IQueryResult<TModel> Skip(int skip)
         {
             throw new NotImplementedException();
         }
 
-        public override IQueryResult<TEntity, TModel> Take(int take)
+        public override IQueryResult<TModel> Take(int take)
         {
             throw new NotImplementedException();
         }
@@ -61,7 +58,7 @@ namespace CQS.Framework.DefaultImp
             return Object;
         }
 
-        public override TModel First(Expression<Func<TEntity, bool>> first)
+        public override TModel First(Expression<Func<TModel, bool>> first)
         {
             throw new NotImplementedException();
         }
@@ -71,7 +68,7 @@ namespace CQS.Framework.DefaultImp
             return Task.FromResult(First());
         }
 
-        public override Task<TModel> FirstAsync(Expression<Func<TEntity, bool>> first)
+        public override Task<TModel> FirstAsync(Expression<Func<TModel, bool>> first)
         {
             throw new NotImplementedException();
         }
@@ -81,7 +78,7 @@ namespace CQS.Framework.DefaultImp
             return Object;
         }
 
-        public override TModel FirstOrDefault(Expression<Func<TEntity, bool>> first)
+        public override TModel FirstOrDefault(Expression<Func<TModel, bool>> first)
         {
             throw new NotImplementedException();
         }
@@ -91,7 +88,7 @@ namespace CQS.Framework.DefaultImp
             return Task.FromResult(FirstOrDefault());
         }
 
-        public override Task<TModel> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> first)
+        public override Task<TModel> FirstOrDefaultAsync(Expression<Func<TModel, bool>> first)
         {
             throw new NotImplementedException();
         }
@@ -106,7 +103,7 @@ namespace CQS.Framework.DefaultImp
             return Object;
         }
 
-        public override TModel Single(Expression<Func<TEntity, bool>> single)
+        public override TModel Single(Expression<Func<TModel, bool>> single)
         {
             throw new NotImplementedException();
         }
@@ -116,7 +113,7 @@ namespace CQS.Framework.DefaultImp
             return Task.FromResult(Single());
         }
 
-        public override Task<TModel> SingleAsync(Expression<Func<TEntity, bool>> single)
+        public override Task<TModel> SingleAsync(Expression<Func<TModel, bool>> single)
         {
             throw new NotImplementedException();
         }
@@ -126,7 +123,7 @@ namespace CQS.Framework.DefaultImp
             return Object;
         }
 
-        public override TModel SingleOrDefault(Expression<Func<TEntity, bool>> single)
+        public override TModel SingleOrDefault(Expression<Func<TModel, bool>> single)
         {
             throw new NotImplementedException();
         }
@@ -136,7 +133,7 @@ namespace CQS.Framework.DefaultImp
             return Task.FromResult(SingleOrDefault());
         }
 
-        public override Task<TModel> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> single)
+        public override Task<TModel> SingleOrDefaultAsync(Expression<Func<TModel, bool>> single)
         {
             throw new NotImplementedException();
         }

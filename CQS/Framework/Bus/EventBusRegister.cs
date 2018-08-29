@@ -2,21 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using CQS.Framework.Event;
 
 namespace CQS.Framework.Bus
 {
-    public class EventBusRegister<TBoundedCountext>
+    public class EventBusRegister
     {
         public static EventBus Instance { get; set; }
 
         public static EventBus RegisterListeners(Assembly assembly)
         {
             var eventListeners = new Dictionary<Type, List<IEventListener>>();
-            var boundedContextType = typeof(TBoundedCountext);
-            var eventListenerType = typeof(EventListener<,>);
+            var eventListenerType = typeof(EventListener<>);
             var assemblyTypes = assembly.GetTypes();
             var eventListenerTypes = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
@@ -29,8 +26,7 @@ namespace CQS.Framework.Bus
                         while (currentBase != null)
                         {
                             if (currentBase.IsGenericType &&
-                                currentBase.GetGenericTypeDefinition() == eventListenerType &&
-                                currentBase.GenericTypeArguments.First().IsAssignableFrom(boundedContextType))
+                                currentBase.GetGenericTypeDefinition() == eventListenerType)
                             {
                                 break;
                             }

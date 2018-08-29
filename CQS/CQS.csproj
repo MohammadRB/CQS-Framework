@@ -30,14 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -48,11 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Framework\App\AppBoundedContext.cs" />
-    <Compile Include="Framework\App\AppHub.cs" />
-    <Compile Include="Framework\App\CrudResults.cs" />
-    <Compile Include="Framework\App\IAppBoundedContext.cs" />
-    <Compile Include="Framework\App\ICrudMessageResolver.cs" />
+    <Compile Include="Framework\App\AppDispatcher.cs" />
     <Compile Include="Framework\App\IExternalEventPublisher.cs" />
     <Compile Include="Framework\Bus\CommandBus.cs" />
     <Compile Include="Framework\Bus\CommandBusRegister.cs" />
@@ -66,21 +54,21 @@
     <Compile Include="Framework\Command\Command.cs" />
     <Compile Include="Framework\Command\CommandHandler.cs" />
     <Compile Include="Framework\Command\CommandResult.cs" />
-    <Compile Include="Framework\Command\DeferedCommandResult.cs" />
     <Compile Include="Framework\Command\ICommandResult.cs" />
     <Compile Include="Framework\Command\ICommand.cs" />
     <Compile Include="Framework\Command\ICommandHandler.cs" />
     <Compile Include="Framework\Command\IDeferedCommandResult.cs" />
-    <Compile Include="Framework\DefaultImp\CreateCommandResult.cs" />
-    <Compile Include="Framework\DefaultImp\DeleteCommandResult.cs" />
-    <Compile Include="Framework\DefaultImp\EntityConvertQueryBuilder.cs" />
-    <Compile Include="Framework\DefaultImp\EntityConvertQuery.cs" />
-    <Compile Include="Framework\DefaultImp\EntityExistCommandResult.cs" />
-    <Compile Include="Framework\DefaultImp\EntityNotExistCommandResult.cs" />
-    <Compile Include="Framework\DefaultImp\ExceptionCommandResult.cs" />
-    <Compile Include="Framework\DefaultImp\FromResultQueryResult.cs" />
-    <Compile Include="Framework\DefaultImp\RepositoryQueryResult.cs" />
-    <Compile Include="Framework\DefaultImp\UpdateCommandResult.cs" />
+    <Compile Include="Framework\DefaultImp\CommandResult\CreateCommandResult.cs" />
+    <Compile Include="Framework\DefaultImp\CommandResult\DeleteCommandResult.cs" />
+    <Compile Include="Framework\DefaultImp\EntityConvertQuery\EntityConvertQueryBuilder.cs" />
+    <Compile Include="Framework\DefaultImp\EntityConvertQuery\EntityConvertQuery.cs" />
+    <Compile Include="Framework\DefaultImp\CommandResult\EntityExistCommandResult.cs" />
+    <Compile Include="Framework\DefaultImp\CommandResult\EntityNotExistCommandResult.cs" />
+    <Compile Include="Framework\DefaultImp\CommandResult\ExceptionCommandResult.cs" />
+    <Compile Include="Framework\DefaultImp\QueryResult\FromResultQueryResult.cs" />
+    <Compile Include="Framework\DefaultImp\QueryResult\QueryableQueryResult.cs" />
+    <Compile Include="Framework\DefaultImp\CommandResult\UpdateCommandResult.cs" />
+    <Compile Include="Framework\Domain\AggregateRoot.cs" />
     <Compile Include="Framework\Event\Event.cs" />
     <Compile Include="Framework\Event\EventListener.cs" />
     <Compile Include="Framework\Event\IEvent.cs" />
@@ -91,15 +79,12 @@
     <Compile Include="Framework\Query\QueryBuilder.cs" />
     <Compile Include="Framework\Query\QueryResult.cs" />
     <Compile Include="Framework\Query\IQueryResult.cs" />
-    <Compile Include="Framework\Repository\IReadContext.cs" />
     <Compile Include="Framework\Repository\IReadRepository.cs" />
-    <Compile Include="Framework\Repository\IWriteContext.cs" />
     <Compile Include="Framework\Repository\IWriteRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

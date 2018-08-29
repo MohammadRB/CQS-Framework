@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CQS.Framework.Query
@@ -12,9 +11,9 @@ namespace CQS.Framework.Query
 
         IQueryResult Include<TProperty>(Expression<Func<object, TProperty>> include);
 
-        IQueryResult OrderBy<TKey>(Expression<Func<object, TKey>> orderby);
+        IQueryResult OrderBy<TKey>(Expression<Func<object, TKey>> orderBy);
 
-        IQueryResult OrderByDesc<TKey>(Expression<Func<object, TKey>> orderby);
+        IQueryResult OrderByDesc<TKey>(Expression<Func<object, TKey>> orderBy);
 
         IQueryResult Skip(int skip);
 
@@ -57,53 +56,52 @@ namespace CQS.Framework.Query
         Task<List<object>> ToListAsync();
     }
 
-    public interface IQueryResult<TEntity, TModel> : IQueryResult
-        where TEntity : class
+    public interface IQueryResult<TModel> : IQueryResult
         where TModel : class
     {
-        IQueryResult<TEntity, TModel> Where(Expression<Func<TEntity, bool>> where);
+        IQueryResult<TModel> Where(Expression<Func<TModel, bool>> where);
 
-        IQueryResult<TEntity, TModel> Include<TProperty>(Expression<Func<TEntity, TProperty>> include);
+        IQueryResult<TModel> Include<TProperty>(Expression<Func<TModel, TProperty>> include);
 
-        IQueryResult<TEntity, TModel> OrderBy<TKey>(Expression<Func<TEntity, TKey>> orderby);
+        IQueryResult<TModel> OrderBy<TKey>(Expression<Func<TModel, TKey>> orderBy);
 
-        IQueryResult<TEntity, TModel> OrderByDesc<TKey>(Expression<Func<TEntity, TKey>> orderby);
+        IQueryResult<TModel> OrderByDesc<TKey>(Expression<Func<TModel, TKey>> orderBy);
 
-        IQueryResult<TEntity, TModel> Skip(int skip);
+        IQueryResult<TModel> Skip(int skip);
 
-        IQueryResult<TEntity, TModel> Take(int take);
+        IQueryResult<TModel> Take(int take);
 
         TModel First();
 
-        TModel First(Expression<Func<TEntity, bool>> first);
+        TModel First(Expression<Func<TModel, bool>> first);
 
         Task<TModel> FirstAsync();
 
-        Task<TModel> FirstAsync(Expression<Func<TEntity, bool>> first);
+        Task<TModel> FirstAsync(Expression<Func<TModel, bool>> first);
 
         TModel FirstOrDefault();
 
-        TModel FirstOrDefault(Expression<Func<TEntity, bool>> first);
+        TModel FirstOrDefault(Expression<Func<TModel, bool>> first);
 
         Task<TModel> FirstOrDefaultAsync();
 
-        Task<TModel> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> first);
+        Task<TModel> FirstOrDefaultAsync(Expression<Func<TModel, bool>> first);
 
         TModel Single();
 
-        TModel Single(Expression<Func<TEntity, bool>> single);
+        TModel Single(Expression<Func<TModel, bool>> single);
 
         Task<TModel> SingleAsync();
 
-        Task<TModel> SingleAsync(Expression<Func<TEntity, bool>> single);
+        Task<TModel> SingleAsync(Expression<Func<TModel, bool>> single);
 
         TModel SingleOrDefault();
 
-        TModel SingleOrDefault(Expression<Func<TEntity, bool>> single);
+        TModel SingleOrDefault(Expression<Func<TModel, bool>> single);
 
         Task<TModel> SingleOrDefaultAsync();
 
-        Task<TModel> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> single);
+        Task<TModel> SingleOrDefaultAsync(Expression<Func<TModel, bool>> single);
 
         List<TModel> ToList();
 

@@ -2,18 +2,16 @@
 {
     public class Command : ICommand
     {
-        public string Name { get { return _name; } }
+        public string Name { get; }
 
         public Command()
         {
-            _name = this.GetType().Name;
+            Name = this.GetType().Name;
         }
 
         public Command(string name)
         {
-            _name = name;
+            Name = name;
         }
-
-        private readonly string _name;
     }
 }

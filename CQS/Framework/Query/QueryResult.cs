@@ -1,59 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using CQS.Framework.DefaultImp;
-using CQS.Framework.Repository;
+using CQS.Framework.DefaultImp.QueryResult;
 
 namespace CQS.Framework.Query
 {
-    public abstract class QueryResult<TEntity, TModel> : IQueryResult<TEntity, TModel>
-        where TEntity : class
+    public abstract class QueryResult<TModel> : IQueryResult<TModel>
         where TModel : class
     {
         IQueryResult IQueryResult.Where(Expression<Func<object, bool>> where)
         {
-            Expression convertedExpression = Expression.Convert(where.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, where.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(where.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, where.Parameters
+            );
 
             return Where(finalExpression);
         }
 
         IQueryResult IQueryResult.Include<TProperty>(Expression<Func<object, TProperty>> include)
         {
-            Expression convertedExpression = Expression.Convert(include.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, include.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(include.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, include.Parameters
+            );
 
             return Include(finalExpression);
         }
 
-        IQueryResult IQueryResult.OrderBy<TKey>(Expression<Func<object, TKey>> orderby)
+        IQueryResult IQueryResult.OrderBy<TKey>(Expression<Func<object, TKey>> orderBy)
         {
-            Expression convertedExpression = Expression.Convert(orderby.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, orderby.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(orderBy.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, orderBy.Parameters
+            );
 
             return OrderBy(finalExpression);
         }
 
-        IQueryResult IQueryResult.OrderByDesc<TKey>(Expression<Func<object, TKey>> orderby)
+        IQueryResult IQueryResult.OrderByDesc<TKey>(Expression<Func<object, TKey>> orderBy)
         {
-            Expression convertedExpression = Expression.Convert(orderby.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, orderby.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(orderBy.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, orderBy.Parameters
+            );
 
             return OrderByDesc(finalExpression);
         }
@@ -75,27 +72,27 @@ namespace CQS.Framework.Query
 
         public object First(Expression<Func<object, bool>> first)
         {
-            Expression convertedExpression = Expression.Convert(first.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, first.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(first.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, first.Parameters
+            );
 
             return First(finalExpression);
         }
 
         Task<object> IQueryResult.FirstAsync()
         {
-            return FirstAsync().ContinueWith(t => (object)t.Result);
+            return FirstAsync().ContinueWith(t => (object) t.Result);
         }
-        
+
         public Task<object> FirstAsync(Expression<Func<object, bool>> first)
         {
-            Expression convertedExpression = Expression.Convert(first.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, first.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(first.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, first.Parameters
+            );
 
             return FirstAsync(finalExpression).ContinueWith(t => (object) t.Result);
         }
@@ -107,27 +104,27 @@ namespace CQS.Framework.Query
 
         public object FirstOrDefault(Expression<Func<object, bool>> first)
         {
-            Expression convertedExpression = Expression.Convert(first.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, first.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(first.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, first.Parameters
+            );
 
             return FirstOrDefault(finalExpression);
         }
 
         Task<object> IQueryResult.FirstOrDefaultAsync()
         {
-            return FirstOrDefaultAsync().ContinueWith(t => (object)t.Result);
+            return FirstOrDefaultAsync().ContinueWith(t => (object) t.Result);
         }
 
         public Task<object> FirstOrDefaultAsync(Expression<Func<object, bool>> first)
         {
-            Expression convertedExpression = Expression.Convert(first.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, first.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(first.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, first.Parameters
+            );
 
             return FirstOrDefaultAsync(finalExpression).ContinueWith(t => (object) t.Result);
         }
@@ -136,14 +133,14 @@ namespace CQS.Framework.Query
         {
             return Single();
         }
-        
+
         public object Single(Expression<Func<object, bool>> single)
         {
-            Expression convertedExpression = Expression.Convert(single.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, single.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(single.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, single.Parameters
+            );
 
             return Single(finalExpression);
         }
@@ -152,14 +149,14 @@ namespace CQS.Framework.Query
         {
             return SingleAsync().ContinueWith(t => (object) t.Result);
         }
-        
+
         public Task<object> SingleAsync(Expression<Func<object, bool>> single)
         {
-            Expression convertedExpression = Expression.Convert(single.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, single.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(single.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, single.Parameters
+            );
 
             return SingleAsync(finalExpression).ContinueWith(t => (object) t.Result);
         }
@@ -168,14 +165,14 @@ namespace CQS.Framework.Query
         {
             return SingleOrDefault();
         }
-        
+
         public object SingleOrDefault(Expression<Func<object, bool>> single)
         {
-            Expression convertedExpression = Expression.Convert(single.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, single.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(single.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, single.Parameters
+            );
 
             return SingleOrDefault(finalExpression);
         }
@@ -184,14 +181,14 @@ namespace CQS.Framework.Query
         {
             return SingleOrDefaultAsync().ContinueWith(t => (object) t.Result);
         }
-        
+
         public Task<object> SingleOrDefaultAsync(Expression<Func<object, bool>> single)
         {
-            Expression convertedExpression = Expression.Convert(single.Body, typeof(TEntity));
-            Expression<Func<TEntity, bool>> finalExpression = Expression.Lambda<Func<TEntity, bool>>
-                (
-                    convertedExpression, single.Parameters
-                );
+            Expression convertedExpression = Expression.Convert(single.Body, typeof(TModel));
+            Expression<Func<TModel, bool>> finalExpression = Expression.Lambda<Func<TModel, bool>>
+            (
+                convertedExpression, single.Parameters
+            );
 
             return SingleOrDefaultAsync(finalExpression).ContinueWith(t => (object) t.Result);
         }
@@ -206,67 +203,67 @@ namespace CQS.Framework.Query
             return ToListAsync().ContinueWith(t => t.Result.Cast<object>().ToList());
         }
 
-        public abstract IQueryResult<TEntity, TModel> Where(Expression<Func<TEntity, bool>> where);
+        public abstract IQueryResult<TModel> Where(Expression<Func<TModel, bool>> where);
 
-        public abstract IQueryResult<TEntity, TModel> Include<TProperty>(Expression<Func<TEntity, TProperty>> include);
+        public abstract IQueryResult<TModel> Include<TProperty>(Expression<Func<TModel, TProperty>> include);
 
-        public abstract IQueryResult<TEntity, TModel> OrderBy<TKey>(Expression<Func<TEntity, TKey>> orderby);
+        public abstract IQueryResult<TModel> OrderBy<TKey>(Expression<Func<TModel, TKey>> orderBy);
 
-        public abstract IQueryResult<TEntity, TModel> OrderByDesc<TKey>(Expression<Func<TEntity, TKey>> orderby);
+        public abstract IQueryResult<TModel> OrderByDesc<TKey>(Expression<Func<TModel, TKey>> orderBy);
 
-        public abstract IQueryResult<TEntity, TModel> Skip(int skip);
+        public abstract IQueryResult<TModel> Skip(int skip);
 
-        public abstract IQueryResult<TEntity, TModel> Take(int take);
+        public abstract IQueryResult<TModel> Take(int take);
 
         public abstract TModel First();
 
-        public abstract TModel First(Expression<Func<TEntity, bool>> first);
+        public abstract TModel First(Expression<Func<TModel, bool>> first);
 
         public abstract Task<TModel> FirstAsync();
 
-        public abstract Task<TModel> FirstAsync(Expression<Func<TEntity, bool>> first);
+        public abstract Task<TModel> FirstAsync(Expression<Func<TModel, bool>> first);
 
         public abstract TModel FirstOrDefault();
 
-        public abstract TModel FirstOrDefault(Expression<Func<TEntity, bool>> first);
+        public abstract TModel FirstOrDefault(Expression<Func<TModel, bool>> first);
 
         public abstract Task<TModel> FirstOrDefaultAsync();
 
-        public abstract Task<TModel> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> first);
+        public abstract Task<TModel> FirstOrDefaultAsync(Expression<Func<TModel, bool>> first);
 
         public abstract TModel Single();
 
-        public abstract TModel Single(Expression<Func<TEntity, bool>> single);
+        public abstract TModel Single(Expression<Func<TModel, bool>> single);
 
         public abstract Task<TModel> SingleAsync();
 
-        public abstract Task<TModel> SingleAsync(Expression<Func<TEntity, bool>> single);
+        public abstract Task<TModel> SingleAsync(Expression<Func<TModel, bool>> single);
 
         public abstract TModel SingleOrDefault();
 
-        public abstract TModel SingleOrDefault(Expression<Func<TEntity, bool>> single);
+        public abstract TModel SingleOrDefault(Expression<Func<TModel, bool>> single);
 
         public abstract Task<TModel> SingleOrDefaultAsync();
 
-        public abstract Task<TModel> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> single);
+        public abstract Task<TModel> SingleOrDefaultAsync(Expression<Func<TModel, bool>> single);
 
         public abstract List<TModel> ToList();
 
         public abstract Task<List<TModel>> ToListAsync();
 
-        public static RepositoryQueryResult<TEntity, TModel> FromRepository(IReadRepository< TEntity > readRepository, Func< TEntity, TModel > mappingFunc)
+        public static QueryableQueryResult<TModel> FromQueryable(IQueryable<TModel> query)
         {
-            return new RepositoryQueryResult< TEntity, TModel >(readRepository, mappingFunc);
+            return new QueryableQueryResult<TModel>(query);
         }
 
-        public static FromResultQueryResult< TEntity, TModel > FromResult(TModel @object)
+        public static FromResultQueryResult<TModel> FromResult(TModel @object)
         {
-            return new FromResultQueryResult< TEntity, TModel >(@object);
+            return new FromResultQueryResult<TModel>(@object);
         }
 
-        public static FromResultQueryResult< TEntity, TModel > FromEmptyResult()
+        public static FromResultQueryResult<TModel> FromEmptyResult()
         {
-            return new FromResultQueryResult< TEntity, TModel >(null);
+            return new FromResultQueryResult<TModel>(null);
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using CQS.Framework.App;
 using CQS.Framework.Event;
@@ -28,8 +25,7 @@ namespace CQS.Framework.Bus
             _eventHandlers = eventListeners;
         }
 
-        public uint Publish<TBoundedContext, TEvent>(TBoundedContext appBoundedContext, TEvent @event)
-            where TBoundedContext : IAppBoundedContext
+        public uint Publish<TEvent>(AppDispatcher appDispatcher, TEvent @event)
             where TEvent : IEvent
         {
             uint numListeners = 0;
@@ -39,7 +35,7 @@ namespace CQS.Framework.Bus
             {
                 foreach (var eventListener in eventListeners)
                 {
-                    eventListener.Handle(appBoundedContext, @event);
+                    eventListener.Handle(appDispatcher, @event);
 
                     ++numListeners;
                 }
@@ -48,11 +44,10 @@ namespace CQS.Framework.Bus
             return numListeners;
         }
 
-        public Task<uint> PublishAsync<TBoundedContext, TEvent>(TBoundedContext appBoundedContext, TEvent @event)
-            where TBoundedContext : IAppBoundedContext
+        public Task<uint> PublishAsync<TEvent>(AppDispatcher appDispatcher, TEvent @event)
             where TEvent : IEvent
         {
-            return Task.Run(() => Publish(appBoundedContext, @event));
+            return Task.Run(() => Publish(appDispatcher, @event));
         }
 
         private readonly Dictionary<Type, List<IEventListener>> _eventHandlers;

@@ -1,29 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CQS.Framework.Event
 {
     public class Event : IEvent
     {
-        public string Name { get { return _name; } }
-        public DateTime Time { get { return _time; } }
+        public string Name { get; }
+        public DateTime Time { get; }
 
         public Event()
         {
-            _name = GetType().Name;
-            _time = new DateTime();
+            Name = GetType().Name;
+            Time = new DateTime();
         }
 
         public Event(string name)
         {
-            _name = name;
-            _time = new DateTime();
+            Name = name;
+            Time = new DateTime();
         }
-
-        private readonly string _name;
-        private readonly DateTime _time;
     }
 }
