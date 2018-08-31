@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CQS.Framework.App;
 using CQS.Framework.Query;
@@ -8,22 +8,13 @@ namespace CQS.Framework.Bus
 {
     public class QueryBus : IQueryBus
     {
-        public QueryBus(Dictionary<Type, IQueryBuilder> queryBuilders)
+        public QueryBus(IServiceLocator serviceLocator)
         {
-            var queryType = typeof(IQuery);
-
-            foreach (var queryBuilder in queryBuilders)
-            {
-                if (!queryType.IsAssignableFrom(queryBuilder.Key))
-                {
-                    throw new InvalidOperationException("Invalid event type");
-                }
-            }
-
-            _queries = queryBuilders;
+            _serviceLocator = serviceLocator;
         }
 
-        public TQuery Build<TQuery>(AppDispatcher appDispatcher, TQuery query) where TQuery : IQuery
+        public TQuery Build<TQuery>(AppDispatcher appDispatcher, TQuery query) 
+            where TQuery : IQuery
         {
             IQueryBuilder queryBuilder = _GetQueryBuilder<TQuery>();
 
@@ -32,16 +23,17 @@ namespace CQS.Framework.Bus
             return query;
         }
 
-        public Task<TQuery> BuildAsync<TQuery>(AppDispatcher appDispatcher, TQuery query) where TQuery : IQuery
+        public Task<TQuery> BuildAsync<TQuery>(AppDispatcher appDispatcher, TQuery query) 
+            where TQuery : IQuery
         {
             return Task.Run(() => Build(appDispatcher, query));
         }
         
-        private IQueryBuilder _GetQueryBuilder<TQuery>() where TQuery : IQuery
+        private IQueryBuilder _GetQueryBuilder<TQuery>() 
+            where TQuery : IQuery
         {
-            IQueryBuilder query;
-
-            if (!_queries.TryGetValue(typeof(TQuery), out query))
+            var query = _serviceLocator.Get<TQuery, IQueryBuilder>().FirstOrDefault();
+            if (query == null)
             {
                 throw new InvalidOperationException("No query builder registered for query");
             }
@@ -49,6 +41,6 @@ namespace CQS.Framework.Bus
             return query;
         }
 
-        private readonly Dictionary<Type, IQueryBuilder> _queries;
+        private readonly IServiceLocator _serviceLocator;
     }
 }

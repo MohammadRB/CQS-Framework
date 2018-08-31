@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CQS.Framework.App;
 using CQS.Framework.Event;
 
 namespace CQS.Framework.Bus
 {
     public class EventBusRegister
     {
-        public static EventBus Instance { get; set; }
-
-        public static EventBus RegisterListeners(Assembly assembly)
+        public static void RegisterListeners(IServiceRegistrar serviceRegistrar, params Assembly[] assemblies)
         {
-            var eventListeners = new Dictionary<Type, List<IEventListener>>();
             var eventListenerType = typeof(EventListener<>);
-            var assemblyTypes = assembly.GetTypes();
+            var assemblyTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
             var eventListenerTypes = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
                 .Select
@@ -39,18 +37,15 @@ namespace CQS.Framework.Bus
                 )
                 .Where(t => t.Item2 != null)
                 .ToList()
-                .GroupBy(el => el.Item2.GenericTypeArguments.ElementAt(1));
+                .GroupBy(el => el.Item2.GenericTypeArguments.First());
 
-            foreach (var listenerType in eventListenerTypes)
+            foreach (var events in eventListenerTypes)
             {
-                eventListeners.Add
-                (
-                    listenerType.Key,
-                    listenerType.Select(elt => (IEventListener) Activator.CreateInstance(elt.Item1)).ToList()
-                );
+                foreach (var listener in events)
+                {
+                    serviceRegistrar.Register(events.Key, listener.Item1);
+                }
             }
-
-            return new EventBus(eventListeners);
         }
     }
 }

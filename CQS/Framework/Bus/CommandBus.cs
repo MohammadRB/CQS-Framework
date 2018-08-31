@@ -1,28 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CQS.Framework.App;
 using CQS.Framework.Command;
-using CQS.Framework.DefaultImp;
 using CQS.Framework.DefaultImp.CommandResult;
 
 namespace CQS.Framework.Bus
 {
     public class CommandBus : ICommandBus
     {
-        public CommandBus(Dictionary<Type, ICommandHandler> commandHandlers)
+        public CommandBus(IServiceLocator serviceLocator)
         {
-            var commandType = typeof(ICommand);
-
-            foreach (var commandHandler in commandHandlers)
-            {
-                if (!commandType.IsAssignableFrom(commandHandler.Key))
-                {
-                    throw new InvalidOperationException("Invalid command type");
-                }
-            }
-
-            _commandHandlers = commandHandlers;
+            _serviceLocator = serviceLocator;
         }
 
         public ICommandResult Send<TCommand>(AppDispatcher appDispatcher, TCommand command)
@@ -51,9 +40,8 @@ namespace CQS.Framework.Bus
 
         private ICommandHandler _GetHandler<TCommand>() where TCommand : ICommand
         {
-            ICommandHandler handler;
-
-            if (!_commandHandlers.TryGetValue(typeof(TCommand), out handler))
+            var handler = _serviceLocator.Get<TCommand, ICommandHandler>().FirstOrDefault();
+            if (handler == null)
             {
                 throw new InvalidOperationException("No handler registered for command");
             }
@@ -61,6 +49,6 @@ namespace CQS.Framework.Bus
             return handler;
         }
 
-        private readonly Dictionary<Type, ICommandHandler> _commandHandlers;
+        private readonly IServiceLocator _serviceLocator;
     }
 }

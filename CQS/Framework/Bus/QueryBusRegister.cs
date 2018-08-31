@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CQS.Framework.App;
 using CQS.Framework.Query;
 
 namespace CQS.Framework.Bus
 {
     public class QueryBusRegister
     {
-        public static QueryBus Instance { get; set; }
-
-        public static QueryBus RegisterBuilders(Assembly assembly)
+        public static void RegisterBuilders(IServiceRegistrar serviceRegistrar, params Assembly[] assemblies)
         {
-            var queryBuilders = new Dictionary<Type, IQueryBuilder>();
             var queryBuilderType = typeof(QueryBuilder<>);
-            var assemblyTypes = assembly.GetTypes();
+            var assemblyTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
             var queryBuilderTypes = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
                 .Select
@@ -42,16 +39,10 @@ namespace CQS.Framework.Bus
 
             foreach (var builderType in queryBuilderTypes)
             {
-                var queryType = builderType.Item2.GenericTypeArguments.ElementAt(1);
+                var queryType = builderType.Item2.GenericTypeArguments.First();
 
-                queryBuilders.Add
-                (
-                    queryType,
-                    (IQueryBuilder) Activator.CreateInstance(builderType.Item1)
-                );
+                serviceRegistrar.Register(queryType, builderType.Item1);
             }
-
-            return new QueryBus(queryBuilders);
         }
     }
 }

@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CQS.Framework.App;
 using CQS.Framework.Command;
 
 namespace CQS.Framework.Bus
 {
     public class CommandBusRegister
     {
-        public static CommandBus Instance { get; set; }
-
-        public static CommandBus RegisterHandlers(Assembly assembly)
+        public static void RegisterHandlers(IServiceRegistrar serviceRegistrar, params Assembly[] assemblies)
         {
-            var result = new Dictionary<Type, ICommandHandler>();
             var commandHandlerTypes = new[]
             {
                 typeof(CommandHandler<>),
@@ -20,8 +18,7 @@ namespace CQS.Framework.Bus
                 typeof(CommandHandler<,,>),
                 typeof(CommandHandler<,,,>)
             };
-
-            var assemblyTypes = assembly.GetTypes();
+            var assemblyTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
             var commandHandlers = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
                 .Select
@@ -49,18 +46,13 @@ namespace CQS.Framework.Bus
 
             foreach (var handlerType in commandHandlers)
             {
-                var commandHandler = (ICommandHandler) Activator.CreateInstance(handlerType.Item1);
-                var commandTypes = handlerType.Item2.GenericTypeArguments
-                    .Skip(1)
-                    .ToList();
+                var commandTypes = handlerType.Item2.GenericTypeArguments.ToList();
 
                 foreach (var commandType in commandTypes)
                 {
-                    result.Add(commandType, commandHandler);
+                    serviceRegistrar.Register(commandType, handlerType.Item1);
                 }
             }
-
-            return new CommandBus(result);
         }
     }
 }

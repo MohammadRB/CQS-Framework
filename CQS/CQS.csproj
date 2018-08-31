@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Framework\App\AppDispatcher.cs" />
     <Compile Include="Framework\App\IExternalEventPublisher.cs" />
+    <Compile Include="Framework\App\IServiceLocator.cs" />
+    <Compile Include="Framework\App\IServiceRegistrar.cs" />
     <Compile Include="Framework\Bus\CommandBus.cs" />
     <Compile Include="Framework\Bus\CommandBusRegister.cs" />
     <Compile Include="Framework\Bus\EventBus.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Framework\DefaultImp\QueryResult\FromResultQueryResult.cs" />
     <Compile Include="Framework\DefaultImp\QueryResult\QueryableQueryResult.cs" />
     <Compile Include="Framework\DefaultImp\CommandResult\UpdateCommandResult.cs" />
+    <Compile Include="Framework\DefaultImp\DefaultServiceLocator.cs" />
     <Compile Include="Framework\Domain\AggregateRoot.cs" />
     <Compile Include="Framework\Event\Event.cs" />
     <Compile Include="Framework\Event\EventListener.cs" />
