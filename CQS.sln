@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQS", "CQS/CQS.csproj", "{C715DBFE-452D-4BEA-9C52-21EF4DB975F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQS", "CQS\CQS.csproj", "{7A66D7A0-9F5F-4AD6-A2B5-DB95CF62AE9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C715DBFE-452D-4BEA-9C52-21EF4DB975F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C715DBFE-452D-4BEA-9C52-21EF4DB975F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C715DBFE-452D-4BEA-9C52-21EF4DB975F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C715DBFE-452D-4BEA-9C52-21EF4DB975F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A66D7A0-9F5F-4AD6-A2B5-DB95CF62AE9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A66D7A0-9F5F-4AD6-A2B5-DB95CF62AE9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A66D7A0-9F5F-4AD6-A2B5-DB95CF62AE9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A66D7A0-9F5F-4AD6-A2B5-DB95CF62AE9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
