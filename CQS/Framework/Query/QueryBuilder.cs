@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CQS.Framework.App;
 
 namespace CQS.Framework.Query
@@ -6,7 +7,7 @@ namespace CQS.Framework.Query
     public abstract class QueryBuilder<TQuery> : IQueryBuilder<TQuery>
         where TQuery : class, IQuery
     {
-        public void Build(AppDispatcher appDispatcher, IQuery query)
+        public Task BuildAsync(AppDispatcher appDispatcher, IQuery query)
         {
             TQuery targetQuery = query as TQuery;
 
@@ -15,9 +16,9 @@ namespace CQS.Framework.Query
                 throw new InvalidOperationException("Invalid query parameter");
             }
 
-            Build(appDispatcher, targetQuery);
+            return BuildAsync(appDispatcher, targetQuery);
         }
 
-        public abstract void Build(AppDispatcher appDispatcher, TQuery query);
+        public abstract Task BuildAsync(AppDispatcher appDispatcher, TQuery query);
     }
 }

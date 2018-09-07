@@ -4,7 +4,11 @@ using System.Linq;
 
 namespace CQS.Framework.Domain
 {
-    public abstract class ValueObject<T>
+    public interface IValueObject
+    {
+    }
+
+    public abstract class ValueObject<T> : IValueObject
     {
         public static bool operator ==(ValueObject<T> left, ValueObject<T> right)
         {

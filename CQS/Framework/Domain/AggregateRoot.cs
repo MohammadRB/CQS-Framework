@@ -1,6 +1,13 @@
-﻿namespace CQS.Framework.Domain
+﻿using System;
+
+namespace CQS.Framework.Domain
 {
-    public class AggregateRoot
+    public interface IAggregateRoot
     {
+    }
+
+    public interface IAggregateRoot<out TId> : IAggregateRoot
+    {
+        TId Id { get; }
     }
 }

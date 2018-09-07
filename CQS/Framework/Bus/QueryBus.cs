@@ -16,17 +16,17 @@ namespace CQS.Framework.Bus
         public TQuery Build<TQuery>(AppDispatcher appDispatcher, TQuery query) 
             where TQuery : IQuery
         {
-            IQueryBuilder queryBuilder = _GetQueryBuilder<TQuery>();
-
-            queryBuilder.Build(appDispatcher, query);
-
-            return query;
+            return Task.Run(() => BuildAsync(appDispatcher, query)).Result;
         }
 
         public Task<TQuery> BuildAsync<TQuery>(AppDispatcher appDispatcher, TQuery query) 
             where TQuery : IQuery
         {
-            return Task.Run(() => Build(appDispatcher, query));
+            IQueryBuilder queryBuilder = _GetQueryBuilder<TQuery>();
+
+            var result = queryBuilder.BuildAsync(appDispatcher, query).ContinueWith(t => query);
+
+            return result;
         }
         
         private IQueryBuilder _GetQueryBuilder<TQuery>() 

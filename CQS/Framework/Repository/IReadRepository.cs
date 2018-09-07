@@ -1,6 +1,8 @@
-﻿namespace CQS.Framework.Repository
+﻿using System;
+
+namespace CQS.Framework.Repository
 {
-    public interface IReadRepository
+    public interface IReadRepository : IDisposable
     {
     }
 }

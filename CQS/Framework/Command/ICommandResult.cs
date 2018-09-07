@@ -2,8 +2,6 @@
 {
     public interface ICommandResult
     {
-        bool WasSuccessed { get; }
-
         ICommand Command { get; }
     }
 }

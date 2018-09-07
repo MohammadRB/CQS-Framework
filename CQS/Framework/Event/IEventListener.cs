@@ -1,15 +1,16 @@
-﻿using CQS.Framework.App;
+﻿using System.Threading.Tasks;
+using CQS.Framework.App;
 
 namespace CQS.Framework.Event
 {
     public interface IEventListener
     {
-        void Handle(AppDispatcher appDispatcher, IEvent @event);
+        Task HandleAsync(AppDispatcher appDispatcher, IEvent @event);
     }
 
     public interface IEventListener<in TEvent> : IEventListener
         where TEvent : class, IEvent
     {
-        void Handle(AppDispatcher appDispatcher, TEvent @event);
+        Task HandleAsync(AppDispatcher appDispatcher, TEvent @event);
     }
 }

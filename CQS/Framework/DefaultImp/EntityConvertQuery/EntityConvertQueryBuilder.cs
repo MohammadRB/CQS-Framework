@@ -1,5 +1,6 @@
 ﻿// [07/21/2016 MRB]
 
+using System.Threading.Tasks;
 using CQS.Framework.App;
 using CQS.Framework.Query;
 
@@ -9,15 +10,19 @@ namespace CQS.Framework.DefaultImp.EntityConvertQuery
         where TFrom : class
         where TTo : class
     {
-        public override void Build(AppDispatcher appDispatcher, EntityConvertQuery<TFrom, TTo> query)
+        public override Task BuildAsync(AppDispatcher appDispatcher, EntityConvertQuery<TFrom, TTo> query)
         {
-            var toObject = Convert(appDispatcher, query.Object);
+            var toObject = ConvertAsync(appDispatcher, query.Object);
 
-            var queryResult = QueryResult<TTo>.FromResult(toObject);         
+            var resultTask = toObject.ContinueWith(t =>
+            {
+                var result = QueryResult<TTo>.FromResult(t.Result);
+                return result;
+            });
 
-            query.SetResult(queryResult);
+            return resultTask;
         }
 
-        public abstract TTo Convert(AppDispatcher appDispatcher, TFrom entity);
+        public abstract Task<TTo> ConvertAsync(AppDispatcher appDispatcher, TFrom entity);
     }
 }

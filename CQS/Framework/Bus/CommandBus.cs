@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CQS.Framework.App;
 using CQS.Framework.Command;
-using CQS.Framework.DefaultImp.CommandResult;
 
 namespace CQS.Framework.Bus
 {
@@ -17,25 +16,18 @@ namespace CQS.Framework.Bus
         public ICommandResult Send<TCommand>(AppDispatcher appDispatcher, TCommand command)
             where TCommand : ICommand
         {
-            ICommandResult result = null;
-            ICommandHandler handler = _GetHandler<TCommand>();
-
-            try
-            {
-                result = handler.Execute(appDispatcher, command);
-            }
-            catch (Exception ex)
-            {
-                result = new ExceptionCommandResult(command, ex);
-            }
-            
-            return result;
+            return Task.Run(() => SendAsync(appDispatcher, command)).Result;
         }
 
         public Task<ICommandResult> SendAsync<TCommand>(AppDispatcher appDispatcher, TCommand command)
             where TCommand : ICommand
         {
-            return Task.Run(() => Send(appDispatcher, command));
+            Task<ICommandResult> result = null;
+            ICommandHandler handler = _GetHandler<TCommand>();
+
+            result = handler.ExecuteAsync(appDispatcher, command);
+
+            return result;
         }
 
         private ICommandHandler _GetHandler<TCommand>() where TCommand : ICommand

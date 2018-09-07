@@ -1,13 +1,11 @@
-﻿using CQS.Framework.Domain;
+﻿using System;
+using System.Threading.Tasks;
+using CQS.Framework.Domain;
 
 namespace CQS.Framework.Repository
 {
-    public interface IWriteRepository<in TAroot> where TAroot : AggregateRoot
+    public interface IWriteRepository<TAroot> : IDisposable where TAroot : IAggregateRoot
     {
-        void Insert(TAroot entity);
-
-        void Update(TAroot entity);
-
-        void Delete(TAroot entity);
+        Task<TAroot> Find(Object id);
     }
 }

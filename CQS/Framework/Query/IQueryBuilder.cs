@@ -1,15 +1,16 @@
-﻿using CQS.Framework.App;
+﻿using System.Threading.Tasks;
+using CQS.Framework.App;
 
 namespace CQS.Framework.Query
 {
     public interface IQueryBuilder
     {
-        void Build(AppDispatcher appDispatcher, IQuery query);
+        Task BuildAsync(AppDispatcher appDispatcher, IQuery query);
     }
 
     public interface IQueryBuilder<in TQuery> : IQueryBuilder
         where TQuery : IQuery
     {
-        void Build(AppDispatcher appDispatcher, TQuery query);
+        Task BuildAsync(AppDispatcher appDispatcher, TQuery query);
     }
 }
