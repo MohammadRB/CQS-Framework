@@ -2,17 +2,23 @@
 using System.Linq;
 using System.Reflection;
 using CQS.Framework.App;
-using CQS.Framework.Query;
+using CQS.Framework.Command;
 
 namespace CQS.Framework.Bus
 {
-    public class QueryBusRegister
+    public class CommandBusRegistrar
     {
-        public static void RegisterBuilders(IServiceRegistrar serviceRegistrar, params Assembly[] assemblies)
+        public static void RegisterHandlers(IServiceRegistrar serviceRegistrar, params Assembly[] assemblies)
         {
-            var queryBuilderType = typeof(QueryBuilder<>);
+            var commandHandlerTypes = new[]
+            {
+                typeof(CommandHandler<>),
+                typeof(CommandHandler<,>),
+                typeof(CommandHandler<,,>),
+                typeof(CommandHandler<,,,>)
+            };
             var assemblyTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
-            var queryBuilderTypes = assemblyTypes
+            var commandHandlers = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
                 .Select
                 (
@@ -23,7 +29,7 @@ namespace CQS.Framework.Bus
                         while (currentBase != null)
                         {
                             if (currentBase.IsGenericType &&
-                                currentBase.GetGenericTypeDefinition() == queryBuilderType)
+                                commandHandlerTypes.Any(ct => currentBase.GetGenericTypeDefinition() == ct))
                             {
                                 break;
                             }
@@ -37,11 +43,14 @@ namespace CQS.Framework.Bus
                 .Where(t => t.Item2 != null)
                 .ToList();
 
-            foreach (var builderType in queryBuilderTypes)
+            foreach (var handlerType in commandHandlers)
             {
-                var queryType = builderType.Item2.GenericTypeArguments.First();
+                var commandTypes = handlerType.Item2.GenericTypeArguments.ToList();
 
-                serviceRegistrar.Register(queryType, builderType.Item1);
+                foreach (var commandType in commandTypes)
+                {
+                    serviceRegistrar.Register(typeof(ICommandHandler<>).MakeGenericType(commandType), handlerType.Item1);
+                }
             }
         }
     }

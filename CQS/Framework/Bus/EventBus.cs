@@ -23,7 +23,7 @@ namespace CQS.Framework.Bus
             where TEvent : IEvent
         {
             uint numListeners = 0;
-            var eventListeners = _serviceLocator.Get<TEvent, IEventListener>()
+            var eventListeners = _serviceLocator.Get<IEventListener<TEvent>>()
                 .ToList();
             var tasks = new List<Task>(eventListeners.Count);
 

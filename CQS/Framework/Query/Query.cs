@@ -1,4 +1,6 @@
-﻿namespace CQS.Framework.Query
+﻿using System.Linq;
+
+namespace CQS.Framework.Query
 {
     public abstract class Query<TModel> : IQuery<TModel> 
         where TModel : class
@@ -6,6 +8,11 @@
         public void SetResult(object @object)
         {
             SetResult((TModel) @object);
+        }
+
+        public void SetResult(IQueryable queryable)
+        {
+            SetResult((IQueryable<TModel>)queryable);
         }
 
         void IQuery.SetResult(IQueryResult queryResult)
@@ -18,19 +25,36 @@
             return GetResult();
         }
 
-        // Set empty or null result
+        /// <summary>
+        /// Set empty or null result
+        /// </summary>
         public void SetResult()
         {
             Result = QueryResult<TModel>.FromEmptyResult();
         }
 
-        // Set single result
+        /// <summary>
+        /// Set single result
+        /// </summary>
+        /// <param name="object"></param>
         public void SetResult(TModel @object)
         {
             Result = QueryResult<TModel>.FromResult(@object);
         }
 
-        // Set query result
+        /// <summary>
+        /// Set queryable result
+        /// </summary>
+        /// <param name="queryable"></param>
+        public void SetResult(IQueryable<TModel> queryable)
+        {
+            Result = QueryResult<TModel>.FromQueryable(queryable);
+        }
+
+        /// <summary>
+        /// Set query result
+        /// </summary>
+        /// <param name="queryResult"></param>
         public void SetResult(IQueryResult<TModel> queryResult)
         {
             Result = queryResult;
@@ -40,8 +64,7 @@
         {
             return Result;
         }
-
-
+        
         protected IQueryResult<TModel> Result;
     }
 }

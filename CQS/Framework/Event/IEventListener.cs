@@ -9,7 +9,7 @@ namespace CQS.Framework.Event
     }
 
     public interface IEventListener<in TEvent> : IEventListener
-        where TEvent : class, IEvent
+        where TEvent : IEvent
     {
         Task HandleAsync(AppDispatcher appDispatcher, TEvent @event);
     }

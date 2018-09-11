@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CQS.Framework.Domain
+﻿namespace CQS.Framework.Domain
 {
     public interface IAggregateRoot
     {

@@ -27,11 +27,11 @@ namespace CQS.Framework.DefaultImp
             }
         }
 
-        public IEnumerable<TConcrete> Get<TType, TConcrete>()
+        public IEnumerable<TType> Get<TType>()
         {
             var types = _map[typeof(TType)];
             return types.Select(Activator.CreateInstance)
-                .Cast<TConcrete>()
+                .Cast<TType>()
                 .ToList();
         }
 

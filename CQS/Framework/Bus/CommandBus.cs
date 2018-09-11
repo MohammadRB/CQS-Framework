@@ -23,16 +23,16 @@ namespace CQS.Framework.Bus
             where TCommand : ICommand
         {
             Task<ICommandResult> result = null;
-            ICommandHandler handler = _GetHandler<TCommand>();
+            ICommandHandler<TCommand> handler = _GetHandler<TCommand>();
 
             result = handler.ExecuteAsync(appDispatcher, command);
 
             return result;
         }
 
-        private ICommandHandler _GetHandler<TCommand>() where TCommand : ICommand
+        private ICommandHandler<TCommand> _GetHandler<TCommand>() where TCommand : ICommand
         {
-            var handler = _serviceLocator.Get<TCommand, ICommandHandler>().FirstOrDefault();
+            var handler = _serviceLocator.Get<ICommandHandler<TCommand>>().FirstOrDefault();
             if (handler == null)
             {
                 throw new InvalidOperationException("No handler registered for command");

@@ -4,6 +4,6 @@ namespace CQS.Framework.App
 {
     public interface IServiceLocator
     {
-        IEnumerable<TConcrete> Get<TType, TConcrete>();
+        IEnumerable<TTyp> Get<TTyp>();
     }
 }

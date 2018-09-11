@@ -1,8 +1,11 @@
-﻿namespace CQS.Framework.Query
+﻿using System.Linq;
+
+namespace CQS.Framework.Query
 {
     public interface IQuery
     {
         void SetResult(object @object);
+        void SetResult(IQueryable queryable);
         void SetResult(IQueryResult queryResult);
         IQueryResult GetResult();
     }
@@ -11,7 +14,8 @@
         where TModel : class
     {
         void SetResult(TModel @object);
+        void SetResult(IQueryable<TModel> queryable);
         void SetResult(IQueryResult<TModel> queryResult);
-        IQueryResult<TModel> GetResult();
+        new IQueryResult<TModel> GetResult();
     }
 }

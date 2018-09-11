@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CQS.Framework.App;
@@ -7,7 +6,7 @@ using CQS.Framework.Event;
 
 namespace CQS.Framework.Bus
 {
-    public class EventBusRegister
+    public class EventBusRegistrar
     {
         public static void RegisterListeners(IServiceRegistrar serviceRegistrar, params Assembly[] assemblies)
         {

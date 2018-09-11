@@ -9,7 +9,7 @@ namespace CQS.Framework.Command
     }
 
     public interface ICommandHandler<in TCommand> : ICommandHandler 
-        where TCommand : class, ICommand
+        where TCommand : ICommand
     {
         Task<ICommandResult> ExecuteAsync(AppDispatcher appDispatcher, TCommand command);
     }

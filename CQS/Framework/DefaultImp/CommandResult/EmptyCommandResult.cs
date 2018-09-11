@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CQS.Framework.Command;
+﻿using CQS.Framework.Command;
 
 namespace CQS.Framework.DefaultImp.CommandResult
 {

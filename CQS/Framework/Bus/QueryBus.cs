@@ -22,17 +22,17 @@ namespace CQS.Framework.Bus
         public Task<TQuery> BuildAsync<TQuery>(AppDispatcher appDispatcher, TQuery query) 
             where TQuery : IQuery
         {
-            IQueryBuilder queryBuilder = _GetQueryBuilder<TQuery>();
+            IQueryBuilder<TQuery> queryBuilder = _GetQueryBuilder<TQuery>();
 
             var result = queryBuilder.BuildAsync(appDispatcher, query).ContinueWith(t => query);
 
             return result;
         }
         
-        private IQueryBuilder _GetQueryBuilder<TQuery>() 
+        private IQueryBuilder<TQuery> _GetQueryBuilder<TQuery>() 
             where TQuery : IQuery
         {
-            var query = _serviceLocator.Get<TQuery, IQueryBuilder>().FirstOrDefault();
+            var query = _serviceLocator.Get<IQueryBuilder<TQuery>>().FirstOrDefault();
             if (query == null)
             {
                 throw new InvalidOperationException("No query builder registered for query");
