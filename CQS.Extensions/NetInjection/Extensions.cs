@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using CQS.Extensions.DependencyInjection;
 using CQS.Framework.App;
 using CQS.Framework.Bus;
 using Microsoft.Extensions.DependencyInjection;

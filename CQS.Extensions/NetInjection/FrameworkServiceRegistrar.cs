@@ -1,8 +1,8 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 using CQS.Framework.App;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace CQS.Extensions.DependencyInjection
+namespace CQS.Extensions.NetInjection
 {
     public class FrameworkServiceRegistrar : IServiceRegistrar
     {
