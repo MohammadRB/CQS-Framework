@@ -1,13 +1,21 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CQS.Framework.Query
 {
     public abstract class Query<TModel> : IQuery<TModel> 
         where TModel : class
     {
-        public void SetResult(object @object)
+        public void SetResult(Object @object)
         {
             SetResult((TModel) @object);
+        }
+
+        public void SetResult(List<Object> list)
+        {
+            SetResult(list.Cast<TModel>());
         }
 
         public void SetResult(IQueryable queryable)
@@ -40,6 +48,15 @@ namespace CQS.Framework.Query
         public void SetResult(TModel @object)
         {
             Result = QueryResult<TModel>.FromResult(@object);
+        }
+
+        /// <summary>
+        /// Set list result
+        /// </summary>
+        /// <param name="list"></param>
+        public void SetResult(List<TModel> list)
+        {
+            Result = QueryResult<TModel>.FromList(list);
         }
 
         /// <summary>
