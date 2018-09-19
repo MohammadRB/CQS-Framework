@@ -11,9 +11,9 @@ namespace CQS.Extensions.NetInjection
             _serviceCollection = serviceCollection;
         }
 
-        public void Register(Type type, Type concrete)
+        public void Register(Type type, Type implementation)
         {
-            _serviceCollection.AddTransient(type, concrete);
+            _serviceCollection.AddTransient(type, implementation);
         }
 
         private readonly IServiceCollection _serviceCollection;

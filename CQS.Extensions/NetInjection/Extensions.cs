@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using CQS.Framework.App;
 using CQS.Framework.Bus;
+using CQS.Framework.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CQS.Extensions.NetInjection
@@ -13,6 +14,7 @@ namespace CQS.Extensions.NetInjection
             CommandBusRegistrar.RegisterHandlers(serviceRegistrar, assemblies);
             QueryBusRegistrar.RegisterBuilders(serviceRegistrar, assemblies);
             EventBusRegistrar.RegisterListeners(serviceRegistrar, assemblies);
+            RepositoryRegistrar.RegisterRepositories(serviceRegistrar, assemblies);
 
             serviceCollection.AddTransient<IServiceLocator, FrameworkServiceLocator>();
             serviceCollection.AddScoped<ICommandBus, CommandBus>();

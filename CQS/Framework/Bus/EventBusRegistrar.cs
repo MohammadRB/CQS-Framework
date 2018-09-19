@@ -14,35 +14,15 @@ namespace CQS.Framework.Bus
             var assemblyTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
             var eventListenerTypes = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
-                .Select
-                (
-                    t =>
-                    {
-                        var currentBase = t.BaseType;
-
-                        while (currentBase != null)
-                        {
-                            if (currentBase.IsGenericType &&
-                                currentBase.GetGenericTypeDefinition() == eventListenerType)
-                            {
-                                break;
-                            }
-
-                            currentBase = currentBase.BaseType;
-                        }
-
-                        return new Tuple<Type, Type>(t, currentBase);
-                    }
-                )
-                .Where(t => t.Item2 != null)
-                .ToList()
-                .GroupBy(el => el.Item2.GenericTypeArguments.First());
+                .Where(t => t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == eventListenerType)
+                .GroupBy(t => t.BaseType.GetGenericArguments().First())
+                .ToList();
 
             foreach (var events in eventListenerTypes)
             {
                 foreach (var listener in events)
                 {
-                    serviceRegistrar.Register(events.Key, listener.Item1);
+                    serviceRegistrar.Register(events.Key, listener);
                 }
             }
         }

@@ -14,34 +14,12 @@ namespace CQS.Framework.Bus
             var assemblyTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
             var queryBuilderTypes = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
-                .Select
-                (
-                    t =>
-                    {
-                        var currentBase = t.BaseType;
-
-                        while (currentBase != null)
-                        {
-                            if (currentBase.IsGenericType &&
-                                currentBase.GetGenericTypeDefinition() == queryBuilderType)
-                            {
-                                break;
-                            }
-
-                            currentBase = currentBase.BaseType;
-                        }
-
-                        return new Tuple<Type, Type>(t, currentBase);
-                    }
-                )
-                .Where(t => t.Item2 != null)
+                .Where(t => t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == queryBuilderType)
                 .ToList();
 
             foreach (var builderType in queryBuilderTypes)
             {
-                var queryType = builderType.Item2.GenericTypeArguments.First();
-
-                serviceRegistrar.Register(typeof(IQueryBuilder<>).MakeGenericType(queryType), builderType.Item1);
+                serviceRegistrar.Register(typeof(IQueryBuilder<>).MakeGenericType(builderType.BaseType.GetGenericArguments().First()), builderType);
             }
         }
     }

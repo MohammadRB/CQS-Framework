@@ -20,36 +20,15 @@ namespace CQS.Framework.Bus
             var assemblyTypes = assemblies.SelectMany(a => a.GetTypes()).ToList();
             var commandHandlers = assemblyTypes
                 .Where(t => !t.IsAbstract && !t.IsInterface)
-                .Select
-                (
-                    t =>
-                    {
-                        var currentBase = t.BaseType;
-
-                        while (currentBase != null)
-                        {
-                            if (currentBase.IsGenericType &&
-                                commandHandlerTypes.Any(ct => currentBase.GetGenericTypeDefinition() == ct))
-                            {
-                                break;
-                            }
-
-                            currentBase = currentBase.BaseType;
-                        }
-
-                        return new Tuple<Type, Type>(t, currentBase);
-                    }
-                )
-                .Where(t => t.Item2 != null)
+                .Where(t => t.BaseType.IsGenericType && commandHandlerTypes.Any(ct => t.BaseType.GetGenericTypeDefinition() == ct))
                 .ToList();
 
             foreach (var handlerType in commandHandlers)
             {
-                var commandTypes = handlerType.Item2.GenericTypeArguments.ToList();
-
+                var commandTypes = handlerType.BaseType.GenericTypeArguments.ToList();
                 foreach (var commandType in commandTypes)
                 {
-                    serviceRegistrar.Register(typeof(ICommandHandler<>).MakeGenericType(commandType), handlerType.Item1);
+                    serviceRegistrar.Register(typeof(ICommandHandler<>).MakeGenericType(commandType), handlerType);
                 }
             }
         }
