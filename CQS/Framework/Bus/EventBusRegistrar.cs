@@ -22,7 +22,7 @@ namespace CQS.Framework.Bus
             {
                 foreach (var listener in events)
                 {
-                    serviceRegistrar.Register(events.Key, listener);
+                    serviceRegistrar.Register(typeof(IEventListener<>).MakeGenericType(events.Key), listener);
                 }
             }
         }

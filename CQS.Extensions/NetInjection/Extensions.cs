@@ -16,7 +16,7 @@ namespace CQS.Extensions.NetInjection
             EventBusRegistrar.RegisterListeners(serviceRegistrar, assemblies);
             RepositoryRegistrar.RegisterRepositories(serviceRegistrar, assemblies);
 
-            serviceCollection.AddTransient<IServiceLocator, FrameworkServiceLocator>();
+            serviceCollection.AddScoped<IServiceLocator, FrameworkServiceLocator>();
             serviceCollection.AddScoped<ICommandBus, CommandBus>();
             serviceCollection.AddScoped<IQueryBus, QueryBus>();
             serviceCollection.AddScoped<IEventBus, EventBus>();
